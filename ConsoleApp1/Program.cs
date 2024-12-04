@@ -151,14 +151,30 @@ namespace ConsoleApp1
             //10.Write a program to find maximum numbers from given 3 numbers using
             //ternary operator.
 
-            Console.WriteLine("Enter the firtst Number : ");
-            int a = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Enter the Second Number : ");
-            int b = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Enter the third Number : ");
-            int c = Convert.ToInt32(Console.ReadLine());
-            int max = (a > b) ? (a > c ? a : c) : (b > c ? b : c);
-            Console.WriteLine("Max = " + max);
+            //Console.WriteLine("Enter the firtst Number : ");
+            //int a = Convert.ToInt32(Console.ReadLine());
+            //Console.WriteLine("Enter the Second Number : ");
+            //int b = Convert.ToInt32(Console.ReadLine());
+            //Console.WriteLine("Enter the third Number : ");
+            //int c = Convert.ToInt32(Console.ReadLine());
+            //int max = (a > b) ? (a > c ? a : c) : (b > c ? b : c);
+            //Console.WriteLine("Max = " + max);
+
+            //while (true)
+            //{
+            //    ConsoleKeyInfo key = Console.ReadKey();
+            //    Console.WriteLine("\nKey Pressed : " + key.Key);
+            //}
+
+            //int val = Console.Read();
+            //Console.WriteLine("val = "+val);
+
+            int a = 10, b = 20;
+            a = a ^ b;
+            b= a ^ b;
+            a = a ^ b;
+            Console.WriteLine("a = "+a);//20
+            Console.WriteLine("b = "+b);//10
 
         }
 
