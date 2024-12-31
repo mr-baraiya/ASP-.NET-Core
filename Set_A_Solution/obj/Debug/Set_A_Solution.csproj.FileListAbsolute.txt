@@ -1,0 +1,7 @@
+D:\VS_CODES\.NET_Code\Set_A_Solution\obj\Debug\Set_A_Solution.csproj.AssemblyReference.cache
+D:\VS_CODES\.NET_Code\Set_A_Solution\obj\Debug\Set_A_Solution.csproj.CoreCompileInputs.cache
+D:\VS_CODES\.NET_Code\Set_A_Solution\bin\Debug\Set_A_Solution.exe.config
+D:\VS_CODES\.NET_Code\Set_A_Solution\bin\Debug\Set_A_Solution.exe
+D:\VS_CODES\.NET_Code\Set_A_Solution\bin\Debug\Set_A_Solution.pdb
+D:\VS_CODES\.NET_Code\Set_A_Solution\obj\Debug\Set_A_Solution.exe
+D:\VS_CODES\.NET_Code\Set_A_Solution\obj\Debug\Set_A_Solution.pdb
