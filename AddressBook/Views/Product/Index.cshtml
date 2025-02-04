@@ -1,0 +1,52 @@
+﻿@model ProductModel
+
+@using (Html.BeginForm())
+{
+	<h4 class="text-center">Add New Product.</h4>
+	<hr/>
+	<div class="form-group">
+		@Html.LabelFor(m => m.ProductId, new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.TextBoxFor(m => m.ProductId, new { @type="number", @class = "form-control", @placeholder = "Product Id "})
+		</div>
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.ProductName, new { @class = "col-md-2 control-label"})
+		<div class="col-md-10">
+			@Html.TextBoxFor(m => m.ProductName, new { @class = "form-control", @placeholder = "Product Name " })
+		</div>
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.Price, new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.TextBoxFor(m => m.Price, new { @type="number", @class = "form-control", @placeholder = "Price "})
+		</div>
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.Category, new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.DropDownListFor(m => m.Category, new SelectList( new []{"Beauty","Grocery","Electronics"}),"Select Category",new { @class="form-select"})
+		</div>
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.Rating, new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.TextBoxFor(m => m.Rating, new { @type = "number", @class = "form-control", @placeholder = "Ratings " , @pattern="[0-5]{1}"})
+		</div>
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.ProductDescription, new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.TextAreaFor(m => m.ProductDescription, 5, 15, new { @class = "form-control" })
+		</div>
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.ProductCompany, new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.DropDownListFor(m => m.Category, new SelectList(new[] { "Dell", "Microsoft", "Google", "Meta", "Vivo" }), "Select Company", new { @class = "form-select" })
+		</div>
+	</div>
+	<div class="form-group text-center mt-3">
+		<button class="btn btn-success w-50 col">Submit</button>
+	</div>
+}
