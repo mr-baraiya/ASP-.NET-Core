@@ -1,0 +1,54 @@
+﻿@model CityCRUD.Models.CityModel;
+
+@{
+    ViewData["Title"] = Model.CityID == 0 ? "Add City" : "Edit City";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Save" method="post">
+    @* Hidden field for CityID *@
+    <input type="hidden" asp-for="CityID" />
+
+    <div class="form-group">
+        <label asp-for="CityName" class="control-label"></label>
+        <input asp-for="CityName" class="form-control" />
+        <span asp-validation-for="CityName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CountryID" class="control-label"></label>
+        <input asp-for="CountryID" class="form-control" />
+        <span asp-validation-for="CountryID" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CountryID" class="control-label"></label>
+        <div class="col-sm">
+            <select class="form-control" asp-for="CountryID" asp-items="@(new SelectList(ViewBag.CountryID, "CountryID", "CountryName"))">
+                <option value="">Select Country Name</option>
+            </select>
+            <span asp-validation-for="CountryID" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="StateID" class="control-label"></label>
+        <div class="col-sm">
+            <select class="form-control" asp-for="StateID" asp-items="@(new SelectList(ViewBag.StateID, "StateID", "StateName"))">
+                <option value="">Select State Name</option>
+            </select>
+            <span asp-validation-for="StateID" class="text-danger"></span>
+        </div>
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
