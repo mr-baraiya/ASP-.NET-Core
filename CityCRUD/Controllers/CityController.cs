@@ -56,146 +56,182 @@ namespace CityCRUD.Controllers
         }
         #endregion
 
-        #region AddEdit (GET)
+        #region Add
+        // This action displays the City Add/Edit form
         public IActionResult CityAddEdit(int? CityID)
         {
-            string connectionstr = _configuration.GetConnectionString("DefaultConnection");
-            CityModel model = new CityModel();
+            // Load the dropdown list of countries
+            LoadCountryList();
 
-            if (CityID != null)
+            // Check if an edit operation is requested
+            if (CityID.HasValue)
             {
+                string connectionstr = _configuration.GetConnectionString("DefaultConnection");
+                DataTable dt = new DataTable();
+
+                // Fetch city details by ID
                 using (SqlConnection conn = new SqlConnection(connectionstr))
                 {
                     conn.Open();
-                    SqlCommand cmd = conn.CreateCommand();
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandText = "PR_LOC_City_SelectByPK";
-                    cmd.Parameters.AddWithValue("@CityID", CityID);
-
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    if (reader.Read())
+                    using (SqlCommand objCmd = conn.CreateCommand())
                     {
-                        model.CityID = Convert.ToInt32(reader["CityID"]);
-                        model.CityName = reader["CityName"].ToString();
-                        model.CountryID = Convert.ToInt32(reader["CountryID"]);
-                        model.StateID = Convert.ToInt32(reader["StateID"]);
+                        objCmd.CommandType = CommandType.StoredProcedure;
+                        objCmd.CommandText = "PR_LOC_City_SelectByPK";
+                        objCmd.Parameters.Add("@CityID", SqlDbType.Int).Value = CityID;
+
+                        using (SqlDataReader objSDR = objCmd.ExecuteReader())
+                        {
+                            dt.Load(objSDR); // Load data into DataTable
+                        }
+                    }
+                }
+
+                if (dt.Rows.Count > 0)
+                {
+                    // Map data to CityModel
+                    CityModel model = new CityModel();
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        model.CityID = Convert.ToInt32(dr["CityID"]);
+                        model.CityName = dr["CityName"].ToString();
+                        model.StateID = Convert.ToInt32(dr["StateID"]);
+                        model.CountryID = Convert.ToInt32(dr["CountryID"]);
+                        model.CityCode = dr["CityCode"].ToString();
+                        ViewBag.StateList = GetStateByCountryID(model.CountryID); // Load states for selected country
+                    }
+                    GetStatesByCountry(model.CountryID);
+                    return View("CityAddEdit", model); // Return populated model to view
+                }
+            }
+
+            return View("CityAddEdit"); // For adding a new city
+        }
+        #endregion
+
+        #region Save
+        // Save action handles both insert and update operations
+        [HttpPost]
+        public IActionResult Save(CityModel modelCity)
+        {
+            if (ModelState.IsValid)
+            {
+                string connectionstr = _configuration.GetConnectionString("DefaultConnection");
+                using (SqlConnection conn = new SqlConnection(connectionstr))
+                {
+                    conn.Open();
+                    using (SqlCommand objCmd = conn.CreateCommand())
+                    {
+                        objCmd.CommandType = CommandType.StoredProcedure;
+
+                        // Choose procedure based on operation (insert or update)
+                        if (modelCity.CityID == null)
+                        {
+                            objCmd.CommandText = "PR_LOC_City_Insert";
+                        }
+                        else
+                        {
+                            objCmd.CommandText = "PR_LOC_City_Update";
+                            objCmd.Parameters.Add("@CityID", SqlDbType.Int).Value = modelCity.CityID;
+                        }
+
+                        // Pass parameters
+                        objCmd.Parameters.Add("@CityName", SqlDbType.VarChar).Value = modelCity.CityName;
+                        objCmd.Parameters.Add("@CityCode", SqlDbType.VarChar).Value = modelCity.CityCode;
+                        objCmd.Parameters.Add("@StateID", SqlDbType.Int).Value = modelCity.StateID;
+                        objCmd.Parameters.Add("@CountryID", SqlDbType.Int).Value = modelCity.CountryID;
+
+                        objCmd.ExecuteNonQuery(); // Execute the query
+                    }
+                }
+
+                TempData["CityInsertMsg"] = "Record Saved Successfully"; // Success message
+                return RedirectToAction("Index"); // Redirect to city listing
+            }
+
+            LoadCountryList(); // Reload dropdowns if validation fails
+            return View("CityAddEdit", modelCity);
+        }
+        #endregion
+
+        #region LoadCountryList
+        // Load the dropdown list of countries
+        private void LoadCountryList()
+        {
+            string connectionstr = _configuration.GetConnectionString("DefaultConnection");
+            DataTable dt = new DataTable();
+            using (SqlConnection conn = new SqlConnection(connectionstr))
+            {
+                conn.Open();
+                using (SqlCommand objCmd = conn.CreateCommand())
+                {
+                    objCmd.CommandType = CommandType.StoredProcedure;
+                    objCmd.CommandText = "PR_LOC_Country_SelectComboBox";
+
+                    using (SqlDataReader objSDR = objCmd.ExecuteReader())
+                    {
+                        dt.Load(objSDR); // Load data into DataTable
                     }
                 }
             }
 
-            return View("CityAddEdit", model);
+            // Map data to list
+            List<CountryDropDownModel> countryList = new List<CountryDropDownModel>();
+            foreach (DataRow dr in dt.Rows)
+            {
+                countryList.Add(new CountryDropDownModel
+                {
+                    CountryID = Convert.ToInt32(dr["CountryID"]),
+                    CountryName = dr["CountryName"].ToString()
+                });
+            }
+            ViewBag.CountryList = countryList; // Pass list to view
         }
         #endregion
 
-        #region Save (POST)
+        #region GetStatesByCountry
+        // AJAX handler for loading states dynamically
         [HttpPost]
-        public IActionResult Save(CityModel model)
+        public JsonResult GetStatesByCountry(int CountryID)
         {
-            if (!ModelState.IsValid)    
-            {
-                return View("CityAddEdit", model);
-            }
+            List<StateDropDownModel> loc_State = GetStateByCountryID(CountryID); // Fetch states
+            return Json(loc_State); // Return JSON response
+        }
+        #endregion
 
+        #region GetStateByCountryID
+        // Helper method to fetch states by country ID
+        public List<StateDropDownModel> GetStateByCountryID(int CountryID)
+        {
             string connectionstr = _configuration.GetConnectionString("DefaultConnection");
+            List<StateDropDownModel> loc_State = new List<StateDropDownModel>();
 
             using (SqlConnection conn = new SqlConnection(connectionstr))
             {
                 conn.Open();
-                SqlCommand cmd = conn.CreateCommand();
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                if (model.CityID == 0)
+                using (SqlCommand objCmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "PR_LOC_City_Insert";
-                }
-                else
-                {
-                    cmd.CommandText = "PR_LOC_City_Update";
-                    cmd.Parameters.AddWithValue("@CityID", model.CityID);
-                }
+                    objCmd.CommandType = CommandType.StoredProcedure;
+                    objCmd.CommandText = "PR_LOC_State_SelectComboBoxByCountryID";
+                    objCmd.Parameters.AddWithValue("@CountryID", CountryID);
 
-                cmd.Parameters.AddWithValue("@CityName", model.CityName);
-                cmd.Parameters.AddWithValue("@CountryID", model.CountryID);
-                cmd.Parameters.AddWithValue("@StateID", model.StateID);
-
-                cmd.ExecuteNonQuery();
-            }
-
-            return RedirectToAction("Index");
-        }
-        #endregion
-
-        #region CountryDropDown
-        public void CountryDropDown()
-        {
-            try
-            {
-                string connectionString = this._configuration.GetConnectionString("DefaultConnection");
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-                    using (SqlCommand command = connection.CreateCommand())
+                    using (SqlDataReader objSDR = objCmd.ExecuteReader())
                     {
-                        command.CommandType = System.Data.CommandType.StoredProcedure;
-                        command.CommandText = "PR_LOC_Country_Fill_Dropdown";
-                        using (SqlDataReader reader = command.ExecuteReader())
+                        if (objSDR.HasRows)
                         {
-                            DataTable dataTable = new DataTable();
-                            dataTable.Load(reader);
-                            List<CountryDropDownModel> CountryList = new List<CountryDropDownModel>();
-                            foreach (DataRow data in dataTable.Rows)
+                            while (objSDR.Read())
                             {
-                                CountryDropDownModel model = new CountryDropDownModel();
-                                model.CountryID = Convert.ToInt32(data["CountryID"]);
-                                model.CountryName = data["CountryName"].ToString();
-                                CountryList.Add(model);
+                                loc_State.Add(new StateDropDownModel
+                                {
+                                    StateID = Convert.ToInt32(objSDR["StateID"]),
+                                    StateName = objSDR["StateName"].ToString()
+                                });
                             }
-                            ViewBag.CountryList = CountryList;
                         }
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = "An error occurred while fetching country: " + ex.Message;
-            }
-        }
-        #endregion
 
-        #region CountryDropDown
-        public void StateDropDown()
-        {
-            try
-            {
-                string connectionString = this._configuration.GetConnectionString("DefaultConnection");
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-                    using (SqlCommand command = connection.CreateCommand())
-                    {
-                        command.CommandType = System.Data.CommandType.StoredProcedure;
-                        command.CommandText = "PR_LOC_State_Fill_Dropdown";
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            DataTable dataTable = new DataTable();
-                            dataTable.Load(reader);
-                            List<StateDropDownModel> StateList = new List<StateDropDownModel>();
-                            foreach (DataRow data in dataTable.Rows)
-                            {
-                                StateDropDownModel model = new StateDropDownModel();
-                                model.StateID = Convert.ToInt32(data["StateID"]);
-                                model.StateName = data["StateName"].ToString();
-                                StateList.Add(model);
-                            }
-                            ViewBag.StateList = StateList;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = "An error occurred while fetching State: " + ex.Message;
-            }
+            return loc_State;
         }
         #endregion
     }

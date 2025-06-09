@@ -19,15 +19,5 @@ namespace CityCRUD.Models
         [DisplayName("City Code")]
         public string CityCode { get; set; }
     }
-    public class CountryDropDownModel
-    {
-        public int CountryID { get; set; }
-        public string CountryName { get; set; }
-    }
 
-    public class StateDropDownModel
-    {
-        public int StateID { get; set; }
-        public string StateName { get; set; }
-    }
 }
