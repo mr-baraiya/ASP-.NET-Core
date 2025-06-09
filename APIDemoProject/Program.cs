@@ -11,12 +11,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<MyDbContext>((serviceProvider, options) =>
-{
-    var config = serviceProvider.GetRequiredService<IConfiguration>();
-    options.UseSqlServer(config.GetConnectionString("MyDB"));
-});
+//builder.Services.AddDbContext<MyDbContext>((serviceProvider, options) =>
+//{
+//    var config = serviceProvider.GetRequiredService<IConfiguration>();
+//    options.UseSqlServer(config.GetConnectionString("MyDB"));
+//});
 
+var provider = builder.Services.BuildServiceProvider();
+var config = provider.GetService<IConfiguration>();
+builder.Services.AddDbContext<MyDbContext>(item => item.UseSqlServer(config.GetConnectionString("MyDB")));
 
 var app = builder.Build();
 
