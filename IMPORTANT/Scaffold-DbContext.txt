@@ -1,7 +1,10 @@
-Scaffold-DbContext "Server=DESKTOP-VISHAL\SQLEXPRESS;Database=MyDB; Trusted_Connection=True;Encrypt=False;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force
+Scaffold-DbContext "server=DESKTOP-AB3E2S4; database=MyDB; trusted_connection=true;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
 
-Scaffold-DbContext "server=DESKTOP-VISHAL\SQLEXPRESS; database=HospitalManagement; trusted_connection=true; TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
---above cmd isnot work properif error comes in build
+Scaffold-DbContext "Server=DESKTOP-VISHAL\SQLEXPRESS;Database=MyDB;Trusted_Connection=True;Encrypt=False;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force
+
+Microsoft.EntityFrameworkCore.SqlServer
+Microsoft.EntityFrameworkCore.Tools
+Microsoft.EntityFrameworkCore.Design
 
 Install-Package Microsoft.EntityFrameworkCore.SqlServer
 Install-Package Microsoft.EntityFrameworkCore.Tools
@@ -12,13 +15,6 @@ Install-Package Microsoft.EntityFrameworkCore.Tools -Version 7.0.16
 Install-Package Microsoft.EntityFrameworkCore.Design -Version 7.0.16
 
 
---Add first one this two lines in Program.cs
-
-using HospitalManagementProject.Models;
-using Microsoft.EntityFrameworkCore;
-
-builder.Services.AddDbContext<HospitalManagementContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnectionString")));
-OR
 var provider = builder.Services.BuildServiceProvider();
 var config = provider.GetRequiredService<IConfiguration>();
-builder.Services.AddDbContext<MyDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnectionString")));
+builder.Services.AddDbContext<MyDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MyDB")));
