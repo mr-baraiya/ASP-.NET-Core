@@ -66,3 +66,4 @@ appsettings.*.json
 
 # Entity Framework Migrations snapshot
 Migrations/
+MVC_Project_DEMO/
