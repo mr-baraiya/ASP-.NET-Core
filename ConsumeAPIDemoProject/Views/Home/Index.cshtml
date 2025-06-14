@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-primary">Welcome to ConsumeAPIDemoProject</h1>
+        <p class="lead text-muted">
+            A demo application to showcase how to consume Web APIs using ASP.NET Core MVC.
+        </p>
+        <a href="https://learn.microsoft.com/aspnet/core" target="_blank" class="btn btn-outline-primary btn-lg mt-3">
+            <i class="bi bi-book"></i> Learn ASP.NET Core
+        </a>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 rounded-4">
+                <div class="card-body text-center">
+                    <i class="bi bi-people-fill display-5 text-success mb-3"></i>
+                    <h5 class="card-title">User Management</h5>
+                    <p class="card-text">View, add, edit, and delete users via RESTful API integration.</p>
+                    <a asp-controller="User" asp-action="Index" class="btn btn-success">Manage Users</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 rounded-4">
+                <div class="card-body text-center">
+                    <i class="bi bi-shield-lock-fill display-5 text-danger mb-3"></i>
+                    <h5 class="card-title">Privacy Policy</h5>
+                    <p class="card-text">Understand how we collect, use, and protect your data.</p>
+                    <a asp-controller="Home" asp-action="Privacy" class="btn btn-danger">View Policy</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 rounded-4">
+                <div class="card-body text-center">
+                    <i class="bi bi-github display-5 text-dark mb-3"></i>
+                    <h5 class="card-title">GitHub</h5>
+                    <p class="card-text">View the source code and contribute to this project on GitHub.</p>
+                    <a href="https://github.com/mr-baraiya" target="_blank" class="btn btn-dark">Visit GitHub</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
