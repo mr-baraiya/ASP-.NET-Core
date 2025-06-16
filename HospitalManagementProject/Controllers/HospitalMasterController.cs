@@ -25,29 +25,29 @@ namespace HospitalManagementProject.Controllers
         }
         #endregion
 
-        #region  GetAllHospitalById
+        #region  GetHospitalById
         [HttpGet("{id}")]
         public IActionResult GetAllHospitalById(int id)
         {
-            var hospitals = _context.HospitalMasters.Find(id);
-            if(hospitals == null)
+            var hospital = _context.HospitalMasters.Find(id);
+            if(hospital == null)
             {
                 return NotFound();
             }
-            return Ok(hospitals);
+            return Ok(hospital);
         }
         #endregion
 
-        #region  DeleteHospital
+        #region  DeleteHospitalByID
         [HttpDelete("{id}")]
-        public IActionResult DeleteHospital(int id)
+        public IActionResult DeleteHospitalByID(int id)
         {
-            var hospitals = _context.HospitalMasters.Find(id);
-            if (hospitals == null)
+            var hospital = _context.HospitalMasters.Find(id);
+            if (hospital == null)
             {
                 return NotFound();
             }
-            _context.HospitalMasters.Remove(hospitals);
+            _context.HospitalMasters.Remove(hospital);
             _context.SaveChanges();
             return NoContent();
         }
@@ -71,21 +71,21 @@ namespace HospitalManagementProject.Controllers
             {
                 return BadRequest();
             }
-            var existingStudent = _context.HospitalMasters.Find(id);
-            if (existingStudent == null)
+            var existingHospital = _context.HospitalMasters.Find(id);
+            if (existingHospital == null)
             {
                 return NotFound();
             }
-            existingStudent.HospitalName = hospital.HospitalName;
-            existingStudent.HospitalAddress = hospital.HospitalAddress;
-            existingStudent.ContactNumber = hospital.ContactNumber;
-            existingStudent.EmailAddress = hospital.EmailAddress;
-            existingStudent.OwnerName = hospital.OwnerName;
-            existingStudent.OpeningDate = hospital.OpeningDate;
-            existingStudent.TotalStaffs = hospital.TotalStaffs;
-            existingStudent.SundayOpen = hospital.SundayOpen;
+            existingHospital.HospitalName = hospital.HospitalName;
+            existingHospital.HospitalAddress = hospital.HospitalAddress;
+            existingHospital.ContactNumber = hospital.ContactNumber;
+            existingHospital.EmailAddress = hospital.EmailAddress;
+            existingHospital.OwnerName = hospital.OwnerName;
+            existingHospital.OpeningDate = hospital.OpeningDate;
+            existingHospital.TotalStaffs = hospital.TotalStaffs;
+            existingHospital.SundayOpen = hospital.SundayOpen;
 
-            _context.HospitalMasters.Update(existingStudent);
+            _context.HospitalMasters.Update(existingHospital);
             _context.SaveChanges();
             return NoContent();
         }
