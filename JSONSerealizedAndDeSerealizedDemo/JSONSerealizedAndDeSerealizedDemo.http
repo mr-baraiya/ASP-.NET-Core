@@ -1,0 +1,6 @@
+@JSONSerealizedAndDeSerealizedDemo_HostAddress = http://localhost:5039
+
+GET {{JSONSerealizedAndDeSerealizedDemo_HostAddress}}/Employee/
+Accept: application/json
+
+###
