@@ -1,35 +1,153 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard";
 }
 
+<div class="container-fluid p-4 bg-light min-vh-100" id="mainContainer">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold" id="dashboardTitle">Dashboard</h2>
+        <button class="btn btn-dark shadow-sm" id="toggleModeBtn" onclick="toggleMode()">Toggle Dark Mode</button>
+    </div>
 
-<div class="container my-4">
-    <h3 class="mb-4">Statistics</h3>
-    <div class="row">
+    <!-- Stat Cards -->
+    <div class="row g-4 mb-4">
         <div class="col-md-4">
-            <div class="card border border-dark mb-3 shadow">
+            <div class="card text-white bg-primary shadow h-100 animate">
                 <div class="card-body text-center">
                     <h5 class="card-title">Cities</h5>
-                    <p class="card-text display-6">@ViewBag.CityCount</p>
+                    <p class="display-5 fw-bold">@ViewBag.CityCount</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card border border-dark mb-3 shadow">
+            <div class="card text-white bg-success shadow h-100 animate">
                 <div class="card-body text-center">
                     <h5 class="card-title">States</h5>
-                    <p class="card-text display-6">@ViewBag.StateCount</p>
+                    <p class="display-5 fw-bold">@ViewBag.StateCount</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card border border-dark mb-3 shadow">
+            <div class="card text-white bg-warning shadow h-100 animate">
                 <div class="card-body text-center">
                     <h5 class="card-title">Countries</h5>
-                    <p class="card-text display-6">@ViewBag.CountryCount</p>
+                    <p class="display-5 fw-bold">@ViewBag.CountryCount</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts and Activity -->
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card shadow h-100 animate">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Recent Activity</h5>
+                </div>
+                <div class="card-body bg-white text-dark" id="activityBody">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Added new city</li>
+                        <li class="list-group-item">Updated state info</li>
+                        <li class="list-group-item">Deleted a country</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow h-100 animate">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Charts</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="myChart" height="150"></canvas>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Chart example
+    const ctx = document.getElementById('myChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Cities', 'States', 'Countries'],
+            datasets: [{
+                label: 'Count',
+                data: [@ViewBag.CityCount ?? 0, @ViewBag.StateCount ?? 0, @ViewBag.CountryCount ?? 0],
+                backgroundColor: ['#0d6efd', '#198754', '#ffc107']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+</script>
+
+<!-- Dark Mode Toggle Script -->
+<script>
+    function toggleMode() {
+        const body = document.body;
+        const container = document.getElementById("mainContainer");
+        const toggleBtn = document.getElementById("toggleModeBtn");
+        const cards = document.querySelectorAll('.card');
+        const cardHeaders = document.querySelectorAll('.card-header');
+        const dashboardTitle = document.getElementById("dashboardTitle");
+        const activityBody = document.getElementById("activityBody");
+
+        // Toggle main theme
+        body.classList.toggle('bg-dark');
+        body.classList.toggle('text-white');
+
+        container.classList.toggle('bg-dark');
+        container.classList.toggle('text-white');
+
+        // Toggle card styles
+        cards.forEach(card => {
+            card.classList.toggle('bg-dark');
+            card.classList.toggle('text-white');
+            card.classList.toggle('border-white');
+        });
+
+        // Toggle card header styles
+        cardHeaders.forEach(header => {
+            header.classList.toggle('bg-dark');
+            header.classList.toggle('text-white');
+        });
+
+        // Toggle inner body of activity card
+        activityBody.classList.toggle('bg-white');
+        activityBody.classList.toggle('text-dark');
+        activityBody.classList.toggle('bg-dark');
+        activityBody.classList.toggle('text-white');
+
+        // Toggle button style
+        toggleBtn.classList.toggle('btn-dark');
+        toggleBtn.classList.toggle('btn-light');
+
+        // Dashboard title toggle
+        dashboardTitle.classList.toggle('text-white');
+    }
+</script>
+
+<!-- Animation Styles -->
+<style>
+    .animate {
+        transition: all 0.4s ease-in-out;
+        transform: scale(1);
+    }
+
+    .animate:hover {
+        transform: scale(1.02);
+    }
+
+    .card-header {
+        transition: all 0.3s ease-in-out;
+    }
+</style>
