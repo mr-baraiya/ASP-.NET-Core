@@ -91,5 +91,21 @@ namespace HospitalManagementProject.Controllers
         }
         #endregion
 
+
+        #region SuccessAndFailure
+        [HttpGet("success")]
+        public ActionResult GetSuccess() 
+        {
+            return Ok(new { Message = "API is working Fine!" });
+        }
+
+        [HttpGet("fail")]
+        public ActionResult GetFailure()
+        {
+            // This will throw an Exception and be caught by the global exception handler.
+            throw new Exception("This is a test Exception.");
+        }
+
+        #endregion
     }
 }
