@@ -16,13 +16,16 @@ namespace APIDemoProject.Controllers
             this.context = context;
         }
 
+        #region GetAllUsers
         [HttpGet]
         public async Task<ActionResult<List<User>>> GetAllUsers()
         {
             var data = await context.Users.ToListAsync();
             return Ok(data);
         }
+        #endregion
 
+        #region GetUserById
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUserById(int id)
         {
@@ -33,7 +36,9 @@ namespace APIDemoProject.Controllers
             }
             return Ok(user);
         }
+        #endregion
 
+        #region CreateUser
         [HttpPost]
         public async Task<ActionResult<User>> CreateUser(User u)
         {
@@ -41,7 +46,9 @@ namespace APIDemoProject.Controllers
             await context.SaveChangesAsync();
             return Ok(u);
         }
+        #endregion
 
+        #region UpdateUser
         [HttpPut("{id}")]
         public async Task<ActionResult<User>> UpdateUser(int id, User u)
         {
@@ -53,7 +60,9 @@ namespace APIDemoProject.Controllers
             await context.SaveChangesAsync();
             return Ok(u);
         }
+        #endregion
 
+        #region DeleteUser
         [HttpDelete("{id}")]
         public async Task<ActionResult<User>> DeleteUser(int id)
         {
@@ -66,5 +75,7 @@ namespace APIDemoProject.Controllers
             await context.SaveChangesAsync();
             return Ok(user);
         }
+        #endregion
+
     }
 }
