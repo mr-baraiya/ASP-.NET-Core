@@ -91,7 +91,6 @@ namespace HospitalManagementProject.Controllers
         }
         #endregion
 
-
         #region SuccessAndFailure
         [HttpGet("success")]
         public ActionResult GetSuccess() 
@@ -107,5 +106,6 @@ namespace HospitalManagementProject.Controllers
         }
 
         #endregion
+
     }
 }
