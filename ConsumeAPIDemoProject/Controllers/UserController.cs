@@ -7,23 +7,34 @@ namespace ConsumeAPIDemoProject.Controllers
 {
     public class UserController : Controller
     {
-        private string url = "http://localhost:5292/api/User/";
-        private HttpClient client = new HttpClient();
+        private string url = "http://localhost:5292/api/V1/User/";
+        private readonly HttpClient client = new HttpClient();
 
         #region GetAllUser
         [HttpGet]
         public IActionResult Index()
         {
             List<User> users = new List<User>();
-            HttpResponseMessage response = client.GetAsync(url).Result;
-            if (response.IsSuccessStatusCode)
+            try
             {
-                string result = response.Content.ReadAsStringAsync().Result;
-                var data = JsonConvert.DeserializeObject<List<User>>(result);
-                if (data != null)
+                HttpResponseMessage response = client.GetAsync(url).Result;
+                if (response.IsSuccessStatusCode)
                 {
-                    users = data;
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    var data = JsonConvert.DeserializeObject<List<User>>(result);
+                    if (data != null)
+                    {
+                        users = data;
+                    }
                 }
+                else
+                {
+                    TempData["ErrorMessage"] = "Failed to fetch users.";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while fetching users: " + ex.Message;
             }
             return View(users);
         }
@@ -58,30 +69,38 @@ namespace ConsumeAPIDemoProject.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception here (e.g., to a file or database if needed)
                 TempData["ErrorMessage"] = "An unexpected error occurred: " + ex.Message;
             }
 
-            return View(u); // Return the view with user data to preserve form inputs
+            return View(u);
         }
-
         #endregion
 
         #region Edit
-
         [HttpGet]
         public IActionResult Edit(int id)
         {
             User u = new User();
-            HttpResponseMessage response = client.GetAsync(url + id).Result;
-            if (response.IsSuccessStatusCode)
+            try
             {
-                string result = response.Content.ReadAsStringAsync().Result;
-                var data = JsonConvert.DeserializeObject<User>(result);
-                if (data != null)
+                HttpResponseMessage response = client.GetAsync(url + id).Result;
+                if (response.IsSuccessStatusCode)
                 {
-                    u = data;
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    var data = JsonConvert.DeserializeObject<User>(result);
+                    if (data != null)
+                    {
+                        u = data;
+                    }
                 }
+                else
+                {
+                    TempData["ErrorMessage"] = "Failed to load user data.";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while loading user: " + ex.Message;
             }
             return View(u);
         }
@@ -103,7 +122,7 @@ namespace ConsumeAPIDemoProject.Controllers
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Failed to Update user. Server returned an error.";
+                    TempData["ErrorMessage"] = "Failed to update user.";
                 }
             }
             catch (Exception ex)
@@ -120,16 +139,28 @@ namespace ConsumeAPIDemoProject.Controllers
         public IActionResult Details(int id)
         {
             User u = new User();
-            HttpResponseMessage response = client.GetAsync(url + id).Result;
-            if (response.IsSuccessStatusCode)
+            try
             {
-                string result = response.Content.ReadAsStringAsync().Result;
-                var data = JsonConvert.DeserializeObject<User>(result);
-                if (data != null)
+                HttpResponseMessage response = client.GetAsync(url + id).Result;
+                if (response.IsSuccessStatusCode)
                 {
-                    u = data;
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    var data = JsonConvert.DeserializeObject<User>(result);
+                    if (data != null)
+                    {
+                        u = data;
+                    }
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "User not found.";
                 }
             }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while loading details: " + ex.Message;
+            }
+
             return View(u);
         }
         #endregion
@@ -139,15 +170,26 @@ namespace ConsumeAPIDemoProject.Controllers
         public IActionResult Delete(int id)
         {
             User u = new User();
-            HttpResponseMessage response = client.GetAsync(url + id).Result;
-            if (response.IsSuccessStatusCode)
+            try
             {
-                string result = response.Content.ReadAsStringAsync().Result;
-                var data = JsonConvert.DeserializeObject<User>(result);
-                if (data != null)
+                HttpResponseMessage response = client.GetAsync(url + id).Result;
+                if (response.IsSuccessStatusCode)
                 {
-                    u = data;
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    var data = JsonConvert.DeserializeObject<User>(result);
+                    if (data != null)
+                    {
+                        u = data;
+                    }
                 }
+                else
+                {
+                    TempData["ErrorMessage"] = "User not found.";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while loading user: " + ex.Message;
             }
             return View(u);
         }
@@ -155,14 +197,27 @@ namespace ConsumeAPIDemoProject.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeleteConfirmed(int id)
         {
-            HttpResponseMessage response = client.DeleteAsync(url + id).Result;
-            if (response.IsSuccessStatusCode)
+            try
             {
-                TempData["DeleteMessage"] = "User Deleted Successfully!";
-                return RedirectToAction("Index");
+                HttpResponseMessage response = client.DeleteAsync(url + id).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    TempData["DeleteMessage"] = "User Deleted Successfully!";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Failed to delete user.";
+                }
             }
-            return View();
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while deleting user: " + ex.Message;
+            }
+
+            return RedirectToAction("Index");
         }
         #endregion
+
     }
 }
