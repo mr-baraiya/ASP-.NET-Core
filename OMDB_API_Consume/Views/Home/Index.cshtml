@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<style>
+    .hero {
+        text-align: center;
+        padding: 80px 20px;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        color: white;
+    }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .hero a {
+            background-color: #ffca28;
+            color: black;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+            .hero a:hover {
+                background-color: #ffc107;
+            }
+
+    .info-section {
+        text-align: center;
+        margin-top: 60px;
+        font-size: 1.1rem;
+    }
+</style>
+
+<div class="hero">
+    <h1>🎬 Welcome to OMDb Movie Explorer</h1>
+    <p>Search any movie by title or IMDb ID and discover its details instantly.</p>
+    <a href="@Url.Action("List", "Movie")">🔍 Start Exploring</a>
+</div>
+
+<div class="info-section">
+    <p>Powered by the <a href="https://www.omdbapi.com" target="_blank">OMDb API</a> — your gateway to movies, series & more.</p>
+</div>

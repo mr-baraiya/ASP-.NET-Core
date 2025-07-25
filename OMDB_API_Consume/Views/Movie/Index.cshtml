@@ -1,0 +1,31 @@
+﻿@model OMDB_API_Consume.Models.Movie
+
+<div style="background-color: #1e1e2f; color: #f1f1f1; padding: 30px; border-radius: 10px; font-family: 'Segoe UI', sans-serif;">
+    <h2 style="color: #00bfff;">🎬 Movie Details</h2>
+
+    <hr style="border-color: #444;" />
+    <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+        <div>
+            <img src="@Model.Poster" alt="Poster" height="350"
+                 style="border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.4);" />
+        </div>
+        <div style="flex: 1;">
+            <h2 style="color: #ffd700;">@Model.Title (@Model.Year)</h2>
+            <p><strong>🎞 Rated:</strong> @Model.Rated</p>
+            <p><strong>📖 Plot:</strong> @Model.Plot</p>
+            <p><strong>🎬 Genre:</strong> @Model.Genre</p>
+            <p><strong>🧑‍🎤 Actors:</strong> @Model.Actors</p>
+            <p><strong>⭐ IMDb Rating:</strong> @Model.imdbRating</p>
+        </div>
+    </div>
+
+    <div style="margin-top: 30px;">
+        <a asp-action="List"
+           asp-route-searchTerm="@ViewBag.SearchTerm"
+           asp-route-year="@ViewBag.Year"
+           asp-route-type="@ViewBag.Type"
+           class="btn btn-primary">
+            Back to List
+        </a>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+﻿@model List<OMDB_API_Consume.Models.MovieSummary>
+@{
+    ViewData["Title"] = "Movie Explorer";
+    var currentSearch = Context.Request.Query["searchTerm"].ToString();
+    var currentYear = Context.Request.Query["year"].ToString();
+    var currentType = Context.Request.Query["type"].ToString();
+}
+
+<h2 class="display-5 text-center mb-4 border-bottom pb-2" style="color:#343a40;">@ViewData["Title"]</h2>
+
+<div class="d-flex justify-content-center mb-4">
+    <form method="get" asp-action="List" class="d-flex flex-wrap gap-2 align-items-center justify-content-center">
+        <input type="text" name="searchTerm" value="@currentSearch" placeholder="Search title..." class="form-control" style="width: 250px;" />
+        <input type="text" name="year" value="@currentYear" placeholder="Year (e.g. 2010)" class="form-control" style="width: 150px;" />
+        <select name="type" class="form-select" style="width: 150px;">
+            <option value="">🎞️ All</option>
+            <option value="movie" selected="@(currentType == "movie")">Movie</option>
+            <option value="series" selected="@(currentType == "series")">Series</option>
+            <option value="episode" selected="@(currentType == "episode")">Episode</option>
+        </select>
+        <button type="submit" class="btn btn-primary px-4">Search</button>
+    </form>
+</div>
+
+@if (ViewBag.Error != null)
+{
+    <p class="text-danger text-center fw-bold">@ViewBag.Error</p>
+}
+
+@if (Model != null && Model.Count > 0)
+{
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            @foreach (var movie in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <img src="@movie.Poster" alt="@movie.Title Poster" class="card-img-top" style="height: 300px; object-fit: cover;" />
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">@movie.Title</h5>
+                            <p class="card-text text-muted">@movie.Year</p>
+                            <a href="@Url.Action("Index", "Movie", new { searchTerm = movie.imdbID })" class="mt-auto btn btn-outline-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
