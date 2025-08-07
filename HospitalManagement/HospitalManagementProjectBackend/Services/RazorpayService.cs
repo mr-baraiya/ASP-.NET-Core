@@ -1,23 +1,33 @@
-﻿using Razorpay.Api;
+﻿using Microsoft.Extensions.Options;
+using Razorpay.Api;
+using HospitalManagementProjectBackend.Models;
 
-namespace HospitalManagementProject.Services
+namespace HospitalManagementProjectBackend.Services
 {
     public class RazorpayService
     {
-        private readonly string key = "YOUR_KEY_ID";
-        private readonly string secret = "YOUR_KEY_SECRET";
+        private readonly RazorpaySettings _settings;
 
-        public Order CreateOrder(int amount)
+        public RazorpayService(IOptions<RazorpaySettings> settings)
         {
-            RazorpayClient client = new RazorpayClient(key, secret);
-            Dictionary<string, object> options = new Dictionary<string, object>();
-            options.Add("amount", amount * 100); // in paise
-            options.Add("currency", "INR");
-            options.Add("receipt", $"order_rcptid_{Guid.NewGuid()}");
+            _settings = settings.Value;
+        }
 
+        public (Order, string) CreateOrder(int amount, string currency = "INR", string receipt = "receipt_001")
+        {
+            // Razorpay expects amount in paise
+            int amountInPaise = amount * 100;
+
+            Dictionary<string, object> options = new Dictionary<string, object>
+            {
+                { "amount", amountInPaise },
+                { "currency", currency },
+                { "receipt", receipt }
+            };
+
+            RazorpayClient client = new RazorpayClient(_settings.Key, _settings.Secret);
             Order order = client.Order.Create(options);
-            return order;
+            return (order, _settings.Key); // Return both order and Key
         }
     }
 }
-

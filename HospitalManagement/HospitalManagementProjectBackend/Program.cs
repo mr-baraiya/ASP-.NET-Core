@@ -1,5 +1,7 @@
 using HospitalManagementProject.Middlewares;
 using HospitalManagementProject.Models;
+using HospitalManagementProjectBackend.Models;
+using HospitalManagementProjectBackend.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<HospitalManagementContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnectionString")));
+
+// Bind section to RazorpaySettings class
+builder.Services.Configure<RazorpaySettings>(
+    builder.Configuration.GetSection("Razorpay")
+);
+
+// Register Razorpay service
+builder.Services.AddScoped<RazorpayService>(); // or use interface if any
 
 // Add CORS configuration
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
