@@ -11,7 +11,7 @@ export default function PaymentPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 px-4">
+    <div className="p-8 w-screen min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 30 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
