@@ -1,0 +1,15 @@
+﻿@page "/routing-parameter/{id:int?}/{name?}"
+ 
+
+<h3>Routing Parameter Component</h3>
+
+<h5>Your Id : @id</h5>
+<h4>Your Name : @name</h4>
+@code {
+    [Parameter]
+    public int? id { get; set; }
+
+    [Parameter]
+    public string? name { get; set; }
+
+}

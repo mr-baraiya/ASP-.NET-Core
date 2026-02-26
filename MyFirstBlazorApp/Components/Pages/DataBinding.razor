@@ -1,0 +1,13 @@
+﻿@page "/databinding"
+@rendermode InteractiveServer
+
+<h3>Data Binding</h3>
+
+<input type="text" @bind="name" @bind:event="oninput"/>
+
+<hr />
+<h1>Your Name : @name</h1>
+
+@code {
+    String name = "";
+}

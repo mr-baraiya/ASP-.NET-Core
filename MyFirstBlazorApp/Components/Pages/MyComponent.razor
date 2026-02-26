@@ -1,0 +1,29 @@
+﻿@page "/mycomponent"
+@page "/mycomponent/vishal"   
+
+<h3>This is My Component.</h3>
+<h5>My name is @name .</h5>
+@if (age > 18)
+{
+    <h5>I am an adult.</h5>
+}
+else
+{
+    <h5>I am a minor.</h5>
+}
+
+@for(int i = 0; i < 5; i++)
+{
+    <p>Number: @i</p>
+}
+
+@while(age < 35)
+{
+    <p>Age: @age</p>
+    age++;
+}
+
+@code {
+    string name = "Vishal Baraiya";
+    int age = 30;
+}

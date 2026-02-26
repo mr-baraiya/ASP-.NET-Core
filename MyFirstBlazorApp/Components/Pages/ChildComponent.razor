@@ -1,0 +1,19 @@
+﻿<h3>Child Component</h3>
+<h4>Name is : @Name </h4>
+<h6>Age is : @Age </h6>
+
+@foreach (var hobby in Hobbies)
+{
+    <p>Hobby is : @hobby</p>
+}
+
+@code {
+    [Parameter]
+    public string Name { get; set; } = "fghdj";
+
+    [Parameter]
+    public int Age { get; set; } = 0;
+
+    [Parameter]
+    public string[] Hobbies { get; set; } = Array.Empty<string>();
+}

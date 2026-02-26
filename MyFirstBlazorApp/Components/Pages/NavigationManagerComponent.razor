@@ -1,0 +1,16 @@
+﻿@page "/navmanager"
+@inject NavigationManager NavManager
+@rendermode InteractiveServer
+<h3>Navigation Manager Component</h3>
+
+<button class="btn btn-primary" @onclick="NavigateToUrl">logout</button>
+
+<h6>Current Url : @NavManager.Uri</h6>
+<h6>Base Url : @NavManager.BaseUri</h6>
+@code {
+    
+    private void NavigateToUrl()
+    {
+        NavManager.NavigateTo("/",forceLoad:true);
+    }
+}
