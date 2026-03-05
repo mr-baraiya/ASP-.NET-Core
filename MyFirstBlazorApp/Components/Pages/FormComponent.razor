@@ -23,6 +23,31 @@
         <InputNumber class="form-control" id="age" @bind-Value="@user.Age" />
         <ValidationMessage For="@(() => user.Age)" />
     </div>
+    <div>
+        <label class="form-label" for="Password">Password</label>
+        <InputText type="password"  class="form-control" id="Password" @bind-Value="@user.Password" />
+        <ValidationMessage For="@(() => user.Password)" />
+    </div>
+    <div>
+        <label class="form-label" for="ConfirmPassword">Confirm Password</label>
+        <InputText type="password" class="form-control" id="ConfirmPassword" @bind-Value="@user.ConfirmPassword" />
+        <ValidationMessage For="@(() => user.ConfirmPassword)" />
+    </div>
+    <div>
+        <label class="form-label" for="PhoneNumber">Phone Number</label>
+        <InputText class="form-control" id="PhoneNumber" @bind-Value="@user.PhoneNumber" />
+        <ValidationMessage For="@(() => user.PhoneNumber)" />
+    </div>
+    <div>
+        <label class="form-label for="Url">Url</label>
+        <InputText class="form-control" id="Url" @bind-Value="@user.Url" />
+        <ValidationMessage For="@(() => user.Url)" />
+    </div>
+    <div>
+        <label class="form-label" for="CreditCardNumber">CreditCard Number</label>
+        <InputText class="form-control" id="CreditCardNumber" @bind-Value="@user.CreditCardNumber" />
+        <ValidationMessage For="@(() => user.CreditCardNumber)" />
+    </div>
     <br />
     <button class="btn btn-primary" type="submit">Submit</button>
 </EditForm>
@@ -34,6 +59,11 @@
     <p><b>Full Name : </b> @user.FullName</p>
     <p><b>Email : </b> @user.Email</p>
     <p><b>Age : </b> @user.Age</p>
+    <p><b>Password : </b> @user.Password</p>
+    <p><b>Phone Number : </b> @user.PhoneNumber</p>
+    <p><b>Url : </b> @user.Url</p>
+    <p><b>Credit Card Number : </b> @user.CreditCardNumber</p>
+    <a href="/form" class="btn btn-secondary">Reset Form</a>
 }
 
 @code {
