@@ -1,10 +1,15 @@
 using MyFirstBlazorApp.Components;
+using MyFirstBlazorApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddScoped<GreetingService>();
+//builder.Services.AddSingleton<GreetingService>();
+//builder.Services.AddTransient<GreetingService>();
 
 var app = builder.Build();
 

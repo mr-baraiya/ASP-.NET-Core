@@ -1,0 +1,10 @@
+﻿@page "/mycomponent2"
+@using MyFirstBlazorApp.Services
+@inject GreetingService GreetingService
+
+<h3>MyComponent2</h3>
+<h2>@GreetingService.GetMessage()</h2>
+
+@code {
+
+}

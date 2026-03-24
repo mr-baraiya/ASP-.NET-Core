@@ -1,0 +1,22 @@
+﻿@page "/mycomponent1"
+@using MyFirstBlazorApp.Services
+@* @inject GreetingService GreetingService *@
+
+<h3>My Component1</h3>
+@* <h2>@GreetingService.GetMessage()</h2> *@
+
+<h2>@message</h2>
+
+@code {
+
+    private string message;
+
+    [Inject]
+    public GreetingService GreetingService { get; set; } = new GreetingService();
+
+    protected override void OnInitialized()
+    {
+        message = GreetingService.GetMessage();
+    }
+
+}
