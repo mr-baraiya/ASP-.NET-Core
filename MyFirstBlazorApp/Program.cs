@@ -11,6 +11,10 @@ builder.Services.AddScoped<GreetingService>();
 //builder.Services.AddSingleton<GreetingService>();
 //builder.Services.AddTransient<GreetingService>();
 
+builder.Services.AddSingleton<TestService>(); // shared across the entire application lifetime
+//builder.Services.AddScoped<TestService>(); // shared within a single user session (or scope)
+//builder.Services.AddTransient<TestService>(); // a new instance is created every time it's requested
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
