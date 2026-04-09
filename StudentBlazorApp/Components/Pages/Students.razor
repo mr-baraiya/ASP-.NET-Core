@@ -1,0 +1,55 @@
+﻿@page "/students"
+@using StudentBlazorApp.Models
+@using StudentBlazorApp.Services
+@inject StudentService studentService
+
+<h3>Students List</h3>
+
+@if(students == null)
+{
+    <p>Loading students...</p>
+}
+else if (students.Count == 0)
+{
+    <p>No students found.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in students)
+            {
+                <tr>
+                    <td>@student.Id</td>
+                    <td>@student.Name</td>
+                    <td>@student.Class</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    private List<Student>? students;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try{
+            students = await studentService.GetStudents();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching students: {ex.Message}");
+            students = new List<Student>();
+        }
+    }
+
+}
