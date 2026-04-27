@@ -1,0 +1,50 @@
+﻿@page "/students"
+@using BlazorDatabaseDemo.Models
+@using BlazorDatabaseDemo.Services
+@inject StudentService studentService
+
+<h3>Students</h3>
+
+@if(students == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (students.Count == 0)
+{
+    <p><em>No students found.</em></p>
+}
+else
+{
+    <table class="table table-striped table-bordered table-hover table-dark">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in students)
+            {
+                <tr>
+                    <td>@student.Id</td>
+                    <td>@student.Name</td>
+                    <td>@student.Age</td>
+                    <td>@student.City</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    List<Student>? students;
+
+    override protected async Task OnInitializedAsync()
+    {
+        students = await studentService.GetStudentsAsync();
+    }
+
+}
